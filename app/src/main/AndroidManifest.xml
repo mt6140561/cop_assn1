@@ -21,7 +21,7 @@
 
         <activity
             android:name=".Login"
-            android:label="log">
+            android:label="Moodle Plus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

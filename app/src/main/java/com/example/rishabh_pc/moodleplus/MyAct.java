@@ -3,6 +3,7 @@ package com.example.rishabh_pc.moodleplus;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 public class MyAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -23,6 +26,17 @@ public class MyAct extends AppCompatActivity
         setContentView(R.layout.activity_my);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Bundle bundle = getIntent().getExtras();
+        Log.d("length", bundle.size() + "");
+
+        String fn = bundle.getString("first_name");
+        String ln = bundle.getString("last_name");
+        TextView welco = (TextView) findViewById(R.id.welc);
+        String welcome = "Welcome " + fn + " " + ln;
+        welco.setText(welcome);
+//        try{
+//        Log.d("Size", (response.getJSONObject("user")).length() + "");} catch (Exception e) {Log.d("Exception", e.getMessage().toString());}
 
 
 
@@ -36,11 +50,7 @@ public class MyAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void send(View v){
-        TextView te = (TextView)findViewById(R.id.usr);
-        String str = "heo";
-        te.setText((CharSequence)str);
-    }
+
 
     @Override
     public void onBackPressed() {
