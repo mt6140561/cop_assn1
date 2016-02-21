@@ -15,10 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import org.json.JSONObject;
 
 public class MyAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static Requeue requeue;
+    private boolean course;
+    private boolean notification;
+    private boolean grades;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,12 @@ public class MyAct extends AppCompatActivity
         setContentView(R.layout.activity_my);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.requeue = new Requeue(this);
+        requeue.start();
+        course = false;
+        notification = false;
+        grades = false;
+
 
         Bundle bundle = getIntent().getExtras();
         Log.d("length", bundle.size() + "");
@@ -35,7 +49,7 @@ public class MyAct extends AppCompatActivity
         TextView welco = (TextView) findViewById(R.id.welc);
         String welcome = "Welcome " + fn + " " + ln;
         welco.setText(welcome);
-//        try{
+//        try {
 //        Log.d("Size", (response.getJSONObject("user")).length() + "");} catch (Exception e) {Log.d("Exception", e.getMessage().toString());}
 
 
@@ -91,7 +105,24 @@ public class MyAct extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            if (course == false) {
+                String url = "http://192.168.137.1:8000/courses/list.json";
+                ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        TextView te = (TextView)findViewById(R.id.pass);
+                        te.setText((CharSequence)response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
+                requeue.add(jobjreq);
+                course = true;
+            } else {}
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

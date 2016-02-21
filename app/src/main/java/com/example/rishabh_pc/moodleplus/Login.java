@@ -37,8 +37,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         _instance = this;
         _preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.requeue = new Requeue(this);
-        requeue.start();
+
         setContentView(R.layout.login);
     }
 
@@ -84,6 +83,8 @@ public class Login extends AppCompatActivity {
 
 
     public void send(View v){
+        this.requeue = new Requeue(this);
+        requeue.start();
 
         final Intent intent = new Intent(this, MyAct.class);
 //        TextView te = (TextView)findViewById(R.id.usr);
