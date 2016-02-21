@@ -1,5 +1,6 @@
 package com.example.rishabh_pc.moodleplus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.drm.DrmStore;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,31 +41,32 @@ public class Login extends AppCompatActivity {
         _preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.login);
+
+
     }
+        public static Login get() {
+            return _instance;
+        }
 
-    public static Login get() {
-        return _instance;
-    }
 
-
-    public final void checkSessionCookie(Map<String, String> headers) {
-        if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE)) {
-            String cookie = headers.get(SET_COOKIE_KEY);
-            if (cookie.length() > 0) {
-                String[] splitCookie = cookie.split(";");
-                String[] splitSessionId = splitCookie[0].split("=");
-                cookie = splitSessionId[1];
-                SharedPreferences.Editor prefEditor = _preferences.edit();
-                prefEditor.putString(SESSION_COOKIE, cookie);
-                prefEditor.commit();
+        public final void checkSessionCookie(Map<String, String> headers) {
+            if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE)) {
+                String cookie = headers.get(SET_COOKIE_KEY);
+                if (cookie.length() > 0) {
+                    String[] splitCookie = cookie.split(";");
+                    String[] splitSessionId = splitCookie[0].split("=");
+                    cookie = splitSessionId[1];
+                    SharedPreferences.Editor prefEditor = _preferences.edit();
+                    prefEditor.putString(SESSION_COOKIE, cookie);
+                    prefEditor.commit();
+                }
             }
         }
-    }
 
-    /**
-     * Adds session cookie to headers if exists.
-     * @param headers
-     */
+        /**
+         * Adds session cookie to headers if exists.
+         * @param headers
+         */
     public final void addSessionCookie(Map<String, String> headers) {
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
         if (sessionId.length() > 0) {

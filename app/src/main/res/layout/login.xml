@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
         android:text="Log in"
         android:layout_below="@id/pass"
-        android:onClick="send"/>
+        android:onClick="send"
+        android:id="@+id/login"/>
 
 
 </RelativeLayout>
