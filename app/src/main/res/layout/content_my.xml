@@ -15,12 +15,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/bar"
-        android:layout_margin="16dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text=""
-            android:id="@+id/welc" />
+        android:layout_margin="16dp"
+        android:id="@+id/relativeLayout">
+
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="aaa"
+        android:textColor="@android:color/white"
+        android:id="@+id/welc"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:layout_marginTop="60dp"
+        android:layout_alignRight="@+id/relativeLayout"
+        android:layout_alignEnd="@+id/relativeLayout"
+
+        android:layout_alignLeft="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout" />
 </RelativeLayout>

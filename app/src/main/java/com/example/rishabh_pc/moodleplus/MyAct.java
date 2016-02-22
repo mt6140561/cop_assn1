@@ -125,7 +125,7 @@ public class MyAct extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.nav_camera) {
             if (course == false) {
-                String url = "http://192.168.137.1:8000/courses/list.json";
+                String url = "http://192.168.1.34:8000/courses/list.json";
                 ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
@@ -144,7 +144,7 @@ public class MyAct extends AppCompatActivity
 
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.blanklayout, new grades())
+                        .replace(R.id.blanklayout, new allcourses())
                         .commit();
 
             } else {}
