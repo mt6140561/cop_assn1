@@ -13,7 +13,7 @@ import com.android.volley.toolbox.HurlStack;
  * Created by Rishab-pc on 19-Feb-16.
  */
 public class Requeue extends RequestQueue {
-    public RequestQueue requestQueue;
+
     public Requeue(Context context) {
         super(new DiskBasedCache(context.getCacheDir(), 1024 * 1024), new BasicNetwork(new HurlStack()));
     }

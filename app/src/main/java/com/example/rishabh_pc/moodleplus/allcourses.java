@@ -6,9 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +26,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class allcourses extends Fragment {
+
+    private static Context mctx;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,11 +63,35 @@ public class allcourses extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        mctx = getActivity();
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.d("frag", "chal raha hai");
+
+
+        Requeue requeue = new Requeue(mctx);
+            String url = "http://192.168.137.1:8000/courses/list.json";
+        Log.d("frag", "yeh bhi hua");
+            ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
+                @Override
+                public void onResponse(JSONObject response) {
+                    TextView te = (TextView) getActivity().findViewById(R.id.test);
+                    te.setText((CharSequence) response);
+                    Log.d("frag", "response hai");
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // TODO Auto-generated method stub
+                }
+            });
+
+            requeue.add(jobjreq);
     }
 
     @Override

@@ -67,6 +67,8 @@ public class MyAct extends AppCompatActivity
         String fn = bundle.getString("first_name");
         String ln = bundle.getString("last_name");
         TextView welco = (TextView) findViewById(R.id.welc);
+        TextView wlc2 = (TextView) findViewById(R.id.welcome2);
+        String welcs = "Welcome " + fn;
         String welcome = "Welcome " + fn + " " + ln;
         welco.setText(welcome);
 //        try {
@@ -124,30 +126,15 @@ public class MyAct extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.nav_camera) {
-            if (course == false) {
-                String url = "http://192.168.137.1:8000/courses/list.json";
-                ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        TextView te = (TextView)findViewById(R.id.welc);
-                        te.setText((CharSequence)response.toString());
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                    }
-                });
 
-                requeue.add(jobjreq);
-                course = true;
+
 
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.blanklayout, new grades())
+                        .replace(R.id.blanklayout, new allcourses())
                         .commit();
 
-            } else {}
+
         } else if (id == R.id.grades) {
 
             fragmentManager.beginTransaction()
