@@ -110,7 +110,7 @@ public class MyAct extends AppCompatActivity
                 ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
-                        TextView te = (TextView)findViewById(R.id.pass);
+                        TextView te = (TextView)findViewById(R.id.welc);
                         te.setText((CharSequence)response.toString());
                     }
                 }, new Response.ErrorListener() {
