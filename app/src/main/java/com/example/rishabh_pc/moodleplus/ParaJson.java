@@ -18,8 +18,11 @@ import java.util.Map;
  */
 public class ParaJson extends JsonObjectRequest {
     public Map<String, String> params = new HashMap<String, String>();
+
     public ParaJson (String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+
         super(Method.GET, url, null, listener, errorListener);
+
 
     }
 

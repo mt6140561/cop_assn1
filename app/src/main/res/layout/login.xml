@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:hint="Username"
         android:text="vinay"
+        android:textColor="@color/colorPrimary"
         android:id="@+id/usr"/>
     <EditText
         android:layout_width="match_parent"
