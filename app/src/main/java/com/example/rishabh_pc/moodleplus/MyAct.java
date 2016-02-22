@@ -127,12 +127,29 @@ public class MyAct extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.nav_camera) {
 
+            if (course == false) {
+                String url = "http://192.168.1.34:8000/courses/list.json";
+                ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        TextView te = (TextView) findViewById(R.id.pass);
+                        te.setText((CharSequence) response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                    }
+                });
 
+                requeue.add(jobjreq);
+                course = true;
 
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.blanklayout, new allcourses())
                         .commit();
+            }
 
 
         } else if (id == R.id.grades) {
