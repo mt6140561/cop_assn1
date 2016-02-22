@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:text="aaa"
-        android:textColor="@android:color/white"
+
         android:id="@+id/welc"
         android:textSize="30sp"
         android:textAlignment="center"
