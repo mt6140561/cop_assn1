@@ -1,0 +1,110 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.rishabh_pc.moodleplus.coursedata">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+
+        android:layout_height="40dp"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Moodle +"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="0dp"
+        android:textSize="25sp"
+        android:layout_gravity="left|top" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/welcome3"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Welcome"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="0dp"
+        android:textSize="25sp"
+
+        android:layout_gravity="right|top" />
+
+    <Button
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:text="OVERVIEW"
+        android:id="@+id/overview"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="1dp"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Assignments"
+        android:id="@+id/assignments"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="90dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Threads"
+        android:id="@+id/Threads"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="205dp"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Grades"
+        android:id="@+id/Grades1"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="282dp"
+
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course 1"
+        android:id="@+id/coursename"
+        android:layout_marginTop="50dp"
+        android:textSize="39sp"
+        android:textAlignment="center"
+
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Code"
+        android:id="@+id/coursecode"
+        android:layout_marginTop="99dp"
+        android:textSize="19sp"
+        android:textAlignment="center"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="342dp"
+        android:id="@+id/courseblank"
+        android:layout_gravity="center_horizontal|bottom"></RelativeLayout>
+
+</FrameLayout>
