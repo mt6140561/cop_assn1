@@ -1,5 +1,6 @@
 package com.example.rishabh_pc.moodleplus;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -108,14 +110,45 @@ public class Login extends AppCompatActivity {
                    Log.d("Success", bool);
                    if (bool.equals("true"))
                    {
-                       JSONObject user = response.getJSONObject("user");
+                       String url2 = "http://192.168.137.1:8000/courses/list.json";
+                       Log.d("frag", "yeh bhi hua");
+                       ParaJson jobjre = new ParaJson(url2, new Response.Listener<JSONObject>() {
+                           @Override
+                           public void onResponse(JSONObject response) {
+                               try {
+                                   JSONArray arr = response.getJSONArray("courses");
+                                   String tag;
+                                   for (int i = 0; i < arr.length(); i++) {
+                                       String[] ret = new String[4];
+                                       ret[0] = arr.getJSONObject(i).getString("code");
+                                       ret[1] = arr.getJSONObject(i).getString("name");
+                                       ret[2] = arr.getJSONObject(i).getString("description");
+                                       ret[3] = arr.getJSONObject(i).getString("id");
+                                       tag = "c" + i;
+                                       intent.putExtra(tag, ret);
+                                       Log.d("experi2", ret.toString());
+                                   }
+                                   JSONObject user = response.getJSONObject("user");
+                                   Log.d("check", response.getJSONObject("user").length() + user.getString("last_name"));
+                                   intent.putExtra("last_name", user.getString("last_name"));
+                                   intent.putExtra("first_name", user.getString("first_name"));
+                                   intent.putExtra("type_", user.getString("type_"));
+                                   startActivity(intent);
+                                   Log.d("experi2", "machaaya");
+                               } catch (Exception e) {Log.d("course while login", e.getMessage());}
+
+                           }
+                       }, new Response.ErrorListener() {
+                           @Override
+                           public void onErrorResponse(VolleyError error) {
+                               Log.d("error", "yeh hua");
+                           }
+                       });
 
 
-                       Log.d("check", response.getJSONObject("user").length() + user.getString("last_name"));
-                       intent.putExtra("last_name", user.getString("last_name"));
-                       intent.putExtra("first_name", user.getString("first_name"));
-                       intent.putExtra("type_", user.getString("type_"));
-                       startActivity(intent);
+                       requeue.add(jobjre);
+
+
                    }
                } catch (Exception e) {Log.d("this", e.getMessage().toString());}
             }
@@ -126,6 +159,7 @@ public class Login extends AppCompatActivity {
                // Log.d("voll", error.getMessage().toString());
             }
         });
+
         requeue.add(jobjreq);
 
 

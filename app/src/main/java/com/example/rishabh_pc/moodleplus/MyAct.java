@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -51,6 +52,7 @@ public class MyAct extends AppCompatActivity
     private boolean notification;
     private boolean grades;
     private overview over;
+    private allcourses allco;
 
 
    @Override
@@ -72,11 +74,7 @@ public class MyAct extends AppCompatActivity
 
         String fn = bundle.getString("first_name");
         String ln = bundle.getString("last_name");
-//        TextView welco = (TextView) findViewById(R.id.welc);
-//        TextView wlc2 = (TextView) findViewById(R.id.welcome2);
-//        String welcs = "Welcome " + fn;
         String welcome = "Welcome " + fn + " " + ln;
-//        welco.setText(welcome);
        Log.d("yeh sahi hai", welcome);
        over = (new overview()).newInstance(fn, ln);
 
@@ -97,6 +95,18 @@ public class MyAct extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+       final Menu menu = navigationView.getMenu();
+       final SubMenu subMenu = menu.addSubMenu("Your courses");
+       int i = 0;
+       String tag = "c" + i;
+       Log.d("array", bundle.getStringArray(tag).toString());
+       while (bundle.getStringArray(tag)!=null) {
+           String[] ret = getIntent().getStringArrayExtra(tag);
+           subMenu.add(ret[0]+" "+ ret[1]);
+            i = i+1;
+           tag = "c" + i;
+           Log.d("machaya phir", tag);
+       }
     }
 
 
@@ -114,7 +124,9 @@ public class MyAct extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.my, menu);
+
         return true;
+
     }
 
     @Override
@@ -171,14 +183,7 @@ public class MyAct extends AppCompatActivity
                     .replace(R.id.blanklayout, new grades())
                     .commit();
 
-        } else if (id == R.id.c1) {
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new coursedata())
-                    .commit();
-        } else if (id == R.id.c2) {
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new coursedata())
-                    .commit();
+
         } else if (id == R.id.overview) {
             fm.beginTransaction()
                     .replace(R.id.blanklayout, over)
