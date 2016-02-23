@@ -1,5 +1,6 @@
 package com.example.rishabh_pc.moodleplus;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,6 +82,7 @@ public class allcourses extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_allcourses, container, false);
         TableLayout table = (TableLayout) v.findViewById(R.id.table1);
+        FragmentManager fm = getFragmentManager();
 
         TableRow.LayoutParams rowparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         for(int i=0; i<Param1.size(); i++) {
@@ -92,11 +94,17 @@ public class allcourses extends Fragment {
             String cour = read1[0].toUpperCase() + ": " + read1[1];
             tes.setText(cour);
             tes.setTextSize(40);
+            myOnClickListener clickListener = new myOnClickListener(read1, fm);
+            tes.setOnClickListener(clickListener);
             row.addView(tes);
+
             table.addView(row);
+
         }
         return v;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

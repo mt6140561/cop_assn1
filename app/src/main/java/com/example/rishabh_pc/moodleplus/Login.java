@@ -84,7 +84,7 @@ public class Login extends AppCompatActivity {
             }
 
             headers.put(COOKIE_KEY, builder.toString());
-            Log.d("this", builder.toString());
+
         }
     }
 
@@ -107,11 +107,11 @@ public class Login extends AppCompatActivity {
                try {
 
                    String bool = response.getString("success");
-                   Log.d("Success", bool);
+
                    if (bool.equals("true"))
                    {
                        String url2 = "http://192.168.137.1:8000/courses/list.json";
-                       Log.d("frag", "yeh bhi hua");
+
                        ParaJson jobjre = new ParaJson(url2, new Response.Listener<JSONObject>() {
                            @Override
                            public void onResponse(JSONObject response) {
@@ -126,15 +126,12 @@ public class Login extends AppCompatActivity {
                                        ret[3] = arr.getJSONObject(i).getString("id");
                                        tag = "c" + i;
                                        intent.putExtra(tag, ret);
-                                       Log.d("experi2", ret.toString());
                                    }
                                    JSONObject user = response.getJSONObject("user");
-                                   Log.d("check", response.getJSONObject("user").length() + user.getString("last_name"));
                                    intent.putExtra("last_name", user.getString("last_name"));
                                    intent.putExtra("first_name", user.getString("first_name"));
                                    intent.putExtra("type_", user.getString("type_"));
                                    startActivity(intent);
-                                   Log.d("experi2", "machaaya");
                                } catch (Exception e) {Log.d("course while login", e.getMessage());}
 
                            }
@@ -156,7 +153,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO Auto-generated method stub
-               // Log.d("voll", error.getMessage().toString());
             }
         });
 
