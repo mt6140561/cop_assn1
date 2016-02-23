@@ -4,9 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -57,6 +61,7 @@ public class threads extends Fragment {
             String tag = "t"+i;
             while (getArguments().getStringArray(tag)!=null) {
                 mParam1.add(getArguments().getStringArray(tag));
+                Log.d("name", getArguments().getStringArray(tag)[0]);
                 i = i+1;
                 tag = "t"+i;
             }
@@ -69,6 +74,18 @@ public class threads extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_threads, container, false);
+        TableLayout table = (TableLayout)v.findViewById(R.id.table_thread);
+        TableRow.LayoutParams rowp = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        for (int i=0; i<mParam1.size(); i++) {
+            for(int j=0; j<mParam1.get(i).length; j++) {
+                TableRow row = new TableRow(getActivity());
+                row.setLayoutParams(rowp);
+                TextView te = new TextView(getActivity());
+                te.setText(mParam1.get(i)[j]);
+                row.addView(te);
+                table.addView(row);
+            }
+        }
 
         return v;
     }

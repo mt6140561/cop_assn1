@@ -41,16 +41,20 @@ public class threadOnClick implements View.OnClickListener {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+
                     ArrayList<String[]> all_threads = new ArrayList<>();
                     JSONArray courset = response.getJSONArray("course_threads");
                     for (int i=0; i<courset.length(); i++) {
-                        String[] putin = new String[5];
-                        putin[0] = courset.getJSONObject(i).getString("user_id");
+                        String[] putin = new String[6];
+                        putin[0] = (courset.getJSONObject(i).getString("user_id"));
                         putin[1] = courset.getJSONObject(i).getString("description");
                         putin[2] = courset.getJSONObject(i).getString("title");
                         putin[3] = courset.getJSONObject(i).getString("created_at");
                         putin[4] = courset.getJSONObject(i).getString("updated_at");
+                        putin[5] = courset.getJSONObject(i).getString("id");
                         all_threads.add(putin);
+
+
 
                 }
                     Log.d("thread", "aa gaya response");

@@ -241,7 +241,7 @@ public class MyAct extends AppCompatActivity
 
         } else {
             int i=0;
-           while (i<courses.size()) {
+            while (i<courses.size()) {
                if (id == i ){
                    fm.beginTransaction()
                            .replace(R.id.blanklayout, new coursedata().newInstance(courses.get(i)))
@@ -317,9 +317,9 @@ public class MyAct extends AppCompatActivity
 
     }
 
-    public String getName(String id) {
+    public void getName(String id) {
         String url = "http://192.168.137.1:8000/users/user.json/" + id;
-
+        Log.d("yeh", "chala toh hai");
 
         ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
             @Override
@@ -328,6 +328,7 @@ public class MyAct extends AppCompatActivity
                     String r = response.getString("first_name") + response.getString("last_name");
                     TextView te = (TextView)findViewById(R.id.place);
                     te.setText(r);
+                    Log.d("yeh1", "chala toh hai");
                 } catch (Exception e) {}
             }
         }, new Response.ErrorListener() {
@@ -338,7 +339,7 @@ public class MyAct extends AppCompatActivity
         });
 
         requeue.add(jobjre);
-        return ((TextView)findViewById(R.id.place)).getText().toString();
+        Log.d("change", ((TextView)findViewById(R.id.place)).getText().toString());
 
     }
 
