@@ -9,18 +9,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
     <include layout="@layout/app_bar_my"
-        android:id="@+id/bar"/>
+        android:id="@+id/bars" />
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="18dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_below="@id/bar">
+
 
 
 
@@ -29,7 +24,9 @@
         android:layout_height="wrap_content"
         android:hint="Username"
         android:text="vinay"
+        android:layout_marginTop="30dp"
         android:textColor="@color/colorPrimary"
+        android:layout_below="@id/bars"
         android:id="@+id/usr"/>
     <EditText
         android:layout_width="match_parent"
@@ -50,7 +47,7 @@
 
 </RelativeLayout>
 
-</RelativeLayout>
+
 
 
 
