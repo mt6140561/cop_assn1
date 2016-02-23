@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -97,6 +98,14 @@ public class MyAct extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+       final Menu menu = navigationView.getMenu();
+
+       final SubMenu subMenu = menu.addSubMenu("Your courses");
+       for (int i = 1; i <= 3; i++) {
+           subMenu.add("SubMenu Item" + i);
+       }
     }
 
 
@@ -142,7 +151,7 @@ public class MyAct extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             final allcourses allc = new allcourses();
-               String url = "http://192.168.137.1:8000/courses/list.json";
+               String url = "http://10.192.39.119:8000/courses/list.json";
                Log.d("frag", "yeh bhi hua");
                ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
                    @Override
@@ -167,24 +176,44 @@ public class MyAct extends AppCompatActivity
 
         } else if (id == R.id.grades) {
 
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new grades())
-                    .commit();
+            final grades allg = new grades();
+            String url = "http://10.192.39.119:8000/default/grades.json";
+            Log.d("frag", "yeh bhi hua");
+            ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                  String[][] star=convertforgrades(response);
+//         Log.d("abc",star.length+"");
+                    Fragment ret = allg.newInstance(star);
 
-        } else if (id == R.id.c1) {
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new coursedata())
-                    .commit();
-        } else if (id == R.id.c2) {
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new coursedata())
-                    .commit();
-        } else if (id == R.id.overview) {
+
+
+                    fm.beginTransaction()
+                            .replace(R.id.blanklayout, ret)
+                            .commit();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("error", "yeh hua");
+                }
+            });
+
+            requeue.add(jobjre);
+
+
+        }
+        else if (id == R.id.overview) {
             fm.beginTransaction()
                     .replace(R.id.blanklayout, over)
                     .commit();
         }
-
+        else  {
+            fm.beginTransaction()
+                    .replace(R.id.blanklayout, new coursedata())
+                    .commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -208,4 +237,44 @@ public class MyAct extends AppCompatActivity
             return null;
         }
     }
+
+
+    private String[][] convertforgrades(JSONObject json) {
+        try {
+            JSONArray arr = json.getJSONArray("grades");
+            JSONArray arr1 = json.getJSONArray("courses");
+
+            String[][] ret1 = new String[arr.length()+1][6];
+            ret1[0][0] = "Weightage";
+            ret1[0][1] = "User_id";
+            ret1[0][2] = "Name"+"       ";
+            ret1[0][3] ="Maximum Marks";
+            ret1[0][5] = "Score";
+            ret1[0][4]= "Course Code";
+
+
+            for (int i = 1; i < arr.length()+1; i++) {
+                ret1[i][0] = arr.getJSONObject(i-1).getString("weightage")+"      ";
+                ret1[i][1] = arr.getJSONObject(i-1).getString("user_id")+"      ";
+                ret1[i][2] = arr.getJSONObject(i-1).getString("name");
+                ret1[i][3] = arr.getJSONObject(i-1).getString("out_of");
+                ret1[i][5] = arr.getJSONObject(i-1).getString("score");
+                ret1[i][4]= arr1.getJSONObject(i-1).getString("code");
+                Log.d("abgghbbb",ret1[i].length+"");
+            }
+
+            Log.d("abbbb",ret1.length + "");
+
+
+
+            return ret1;
+        } catch (Exception e) {
+            Log.d("Excepaasasasa", e.getMessage().toString());
+            return null;
+
+        }
+
+
+    }
+
 }

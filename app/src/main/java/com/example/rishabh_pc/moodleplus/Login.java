@@ -98,7 +98,7 @@ public class Login extends AppCompatActivity {
         String password = ((EditText)findViewById(R.id.pass)).getText().toString();
 
 
-        String url = "http://192.168.137.1:8000/default/login.json?userid=" + username + "&password=" + password;
+        String url = "http://10.192.39.119:8000/default/login.json?userid=" + username + "&password=" + password;
         ParaJson jobjreq = new ParaJson(url, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
