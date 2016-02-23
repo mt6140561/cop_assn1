@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -49,7 +50,7 @@ import java.util.Iterator;
 
 public class MyAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static Requeue requeue;
+ static Requeue requeue;
 
     private overview over;
     private allcourses allco;
@@ -105,11 +106,13 @@ public class MyAct extends AppCompatActivity
            courses.add(ret);
            subMenu.add(0, i, (i*100), ret[0]+": "+ ret[1]);
             i = i+1;
-           tag = "c" + i;
            Log.d("machaya phir", tag);
+           tag = "c" + i;
+
 
        }
     }
+
 
 //    public void onClick(SubMenu sub) {
 //        String name = sub.
@@ -160,7 +163,7 @@ public class MyAct extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             final allcourses allc = new allcourses();
-               String url = "http://10.192.39.119:8000/courses/list.json";
+               String url = "http://192.168.137.1:8000/courses/list.json";
                Log.d("frag", "yeh bhi hua");
                ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
                    @Override
@@ -186,7 +189,7 @@ public class MyAct extends AppCompatActivity
         } else if (id == R.id.grades) {
 
             final grades allg = new grades();
-            String url = "http://10.192.39.119:8000/default/grades.json";
+            String url = "http://192.168.137.1:8000/default/grades.json";
             Log.d("frag", "yeh bhi hua");
             ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
                 @Override
@@ -208,11 +211,34 @@ public class MyAct extends AppCompatActivity
                     Log.d("error", "yeh hua");
                 }
             });
-
+            requeue.add(jobjre);
         } else if (id == R.id.overview) {
             fm.beginTransaction()
                     .replace(R.id.blanklayout, over)
                     .commit();
+        } else if (id == R.id.notif) {
+            String url = "http://192.168.137.1:8000/default/notifications.json";
+
+            ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+//                    String[][] star = convert(response);
+//                    Fragment ret = allc.newInstance(star);
+//                    fm.beginTransaction()
+//                            .replace(R.id.blanklayout, ret)
+//                            .commit();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("error", "yeh hua");
+                }
+            });
+
+            requeue.add(jobjre);
+
         } else {
             int i=0;
            while (i<courses.size()) {
@@ -230,6 +256,8 @@ public class MyAct extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
     private String[][] convert(JSONObject json) {
         try {
@@ -288,5 +316,38 @@ public class MyAct extends AppCompatActivity
 
 
     }
+
+    public String getName(String id) {
+        String url = "http://192.168.137.1:8000/users/user.json/" + id;
+
+
+        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String r = response.getString("first_name") + response.getString("last_name");
+                    TextView te = (TextView)findViewById(R.id.place);
+                    te.setText(r);
+                } catch (Exception e) {}
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", "yeh hua");
+            }
+        });
+
+        requeue.add(jobjre);
+        return ((TextView)findViewById(R.id.place)).getText().toString();
+
+    }
+
+    public void threadJSON(coursedata dat, Button butt) {
+        threadOnClick toc = new threadOnClick(dat, getFragmentManager(), this);
+        Log.d("nope", "yep");
+
+        butt.setOnClickListener(toc);
+    }
+
 
 }

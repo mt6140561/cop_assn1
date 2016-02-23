@@ -17,7 +17,7 @@ public class myOnClickListener implements View.OnClickListener {
 
         this.params = params;
         this.fm = fm;
-        this.v = v;
+
 
 
     }

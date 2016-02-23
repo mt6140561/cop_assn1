@@ -1,55 +1,49 @@
 package com.example.rishabh_pc.moodleplus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link coursedata.OnFragmentInteractionListener} interface
+ * {@link threads.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link coursedata#newInstance} factory method to
+ * Use the {@link threads#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class coursedata extends Fragment {
+public class threads extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String INFO = "array";
-  //  private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    public String[] basics;
-   // private String mParam2;
+    private ArrayList<String[]> mParam1;
+//    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public coursedata() {
+    public threads() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment coursedata.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static coursedata newInstance(String[] param1) {
-        coursedata fragment = new coursedata();
-        Bundle args = new Bundle();
-        args.putStringArray(INFO, param1);
 
+    // TODO: Rename and change types and number of parameters
+    public static threads newInstance(ArrayList<String[]> param1) {
+        threads fragment = new threads();
+        Bundle args = new Bundle();
+        for (int i=0; i<param1.size(); i++) {
+            String tag = "t" + i;
+            args.putStringArray(tag, param1.get(i));
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,27 +51,24 @@ public class coursedata extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mParam1 = new ArrayList<>();
         if (getArguments() != null) {
-            basics = getArguments().getStringArray(INFO);
+            int i = 0;
+            String tag = "t"+i;
+            while (getArguments().getStringArray(tag)!=null) {
+                mParam1.add(getArguments().getStringArray(tag));
+                i = i+1;
+                tag = "t"+i;
+            }
 
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_coursedata, container, false);
-        TextView te = (TextView) v.findViewById(R.id.coursename);
-        te.setText(basics[0]+": "+ basics[1]);
-        TextView te2 = (TextView) v.findViewById(R.id.coursecode);
-        te2.setText(basics[2]);
-//        Button thread = (Button)v.findViewById(R.id.Threads);
-//        threadOnClick toc = new threadOnClick(this, getFragmentManager(), v, getActivity().getApplicationContext());
-//        thread.setOnClickListener(toc);
-        ((MyAct)getActivity()).threadJSON(this, (Button)v.findViewById(R.id.Threads));
-
+        View v = inflater.inflate(R.layout.fragment_threads, container, false);
 
         return v;
     }

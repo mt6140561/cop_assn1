@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
-        android:text="vinay"
+        android:text="cs1110200"
         android:layout_marginTop="30dp"
         android:textColor="@color/colorPrimary"
         android:layout_below="@id/bars"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:id="@+id/pass"
-        android:text="vinay"
+        android:text="john"
         android:layout_below="@id/usr"
         android:password="true"/>
     <Button

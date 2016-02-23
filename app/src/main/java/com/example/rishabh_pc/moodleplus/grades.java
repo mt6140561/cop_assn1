@@ -122,15 +122,20 @@ mHorizontalScroll.smoothScrollTo(positionLeftWidth, 0);}
         for(int i=0; i<Param1.size(); i++) {
             TableRow row = new TableRow(this.getActivity());
             row.setLayoutParams(rowparams);
-            TextView tes = new TextView(this.getActivity());
+
 
             String[] read1 = Param1.get(i);
             Log.d("here", read1[0] + "      " + read1[1]);
-            String cour = read1[0].toUpperCase() + "     " + read1[1] + "     "+ read1[2] +"     " +read1[3] +"      "
-                    +read1[4]+"       "+ read1[5]+"  ";
-            tes.setText(cour);
-            tes.setTextSize(18);
-            row.addView(tes);
+            for (int j=0; j<5; j++) {
+                TextView tes = new TextView(this.getActivity());
+                String addt = read1[j];
+                tes.setText(addt);
+                tes.setTextSize(18);
+                tes.setPaddingRelative(20, 0, 0, 0);
+                row.addView(tes);
+            }
+
+
             table.addView(row);
         }
         return v;
