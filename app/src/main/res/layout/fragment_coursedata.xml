@@ -9,36 +9,8 @@
 
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-
-        android:layout_height="40dp"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Moodle +"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="0dp"
-        android:textSize="25sp"
-        android:layout_gravity="left|top" />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/welcome3"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Welcome"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="0dp"
-        android:textSize="25sp"
-
-        android:layout_gravity="right|top" />
 
     <Button
         android:layout_width="95dp"
