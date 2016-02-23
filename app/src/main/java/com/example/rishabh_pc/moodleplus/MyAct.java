@@ -1,6 +1,7 @@
 package com.example.rishabh_pc.moodleplus;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -43,16 +44,16 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MyAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static Requeue requeue;
-    private boolean course;
-    private boolean notification;
-    private boolean grades;
-    private overview over;
 
+    private overview over;
+    private allcourses allco;
+    private ArrayList<String[]> courses;
 
    @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,7 @@ public class MyAct extends AppCompatActivity
         setSupportActionBar(toolbar);
         this.requeue = new Requeue(this);
         requeue.start();
-        course = false;
-        notification = false;
-        grades = false;
+        courses = new ArrayList<>();
 
 
         Bundle bundle = getIntent().getExtras();
@@ -73,11 +72,7 @@ public class MyAct extends AppCompatActivity
 
         String fn = bundle.getString("first_name");
         String ln = bundle.getString("last_name");
-//        TextView welco = (TextView) findViewById(R.id.welc);
-//        TextView wlc2 = (TextView) findViewById(R.id.welcome2);
-//        String welcs = "Welcome " + fn;
         String welcome = "Welcome " + fn + " " + ln;
-//        welco.setText(welcome);
        Log.d("yeh sahi hai", welcome);
        over = (new overview()).newInstance(fn, ln);
 
@@ -99,14 +94,26 @@ public class MyAct extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+       Menu menu = navigationView.getMenu();
+       SubMenu subMenu = menu.addSubMenu("Your courses");
+       int i = 0;
+       String tag = "c" + i;
+       Log.d("array", bundle.getStringArray(tag).toString());
 
-       final Menu menu = navigationView.getMenu();
+       while (bundle.getStringArray(tag)!=null) {
+           String[] ret = getIntent().getStringArrayExtra(tag);
+           courses.add(ret);
+           subMenu.add(0, i, (i*100), ret[0]+": "+ ret[1]);
+            i = i+1;
+           tag = "c" + i;
+           Log.d("machaya phir", tag);
 
-       final SubMenu subMenu = menu.addSubMenu("Your courses");
-       for (int i = 1; i <= 3; i++) {
-           subMenu.add("SubMenu Item" + i);
        }
     }
+
+//    public void onClick(SubMenu sub) {
+//        String name = sub.
+//    }
 
 
     @Override
@@ -123,7 +130,9 @@ public class MyAct extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.my, menu);
+
         return true;
+
     }
 
     @Override
@@ -200,19 +209,22 @@ public class MyAct extends AppCompatActivity
                 }
             });
 
-            requeue.add(jobjre);
-
-
-        }
-        else if (id == R.id.overview) {
+        } else if (id == R.id.overview) {
             fm.beginTransaction()
                     .replace(R.id.blanklayout, over)
                     .commit();
-        }
-        else  {
-            fm.beginTransaction()
-                    .replace(R.id.blanklayout, new coursedata())
-                    .commit();
+        } else {
+            int i=0;
+           while (i<courses.size()) {
+               if (id == i ){
+                   fm.beginTransaction()
+                           .replace(R.id.blanklayout, new coursedata().newInstance(courses.get(i)))
+                           .commit();
+                   Log.d("tu sahi hai", i+"");
+               }
+               i = i+1;
+
+           }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
