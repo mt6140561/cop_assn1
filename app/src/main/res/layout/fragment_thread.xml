@@ -2,23 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rishabh_pc.moodleplus.threads">
+    tools:context="com.example.rishabh_pc.moodleplus.thread">
 
     <!-- TODO: Update blank fragment layout -->
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TableLayout
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/table_thread"
-            android:layout_marginTop="?attr/actionBarSize"/>
-        <Button
+            android:id="@+id/sender"
+            android:text="hello"
+            android:textSize="35sp"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Thread"
-            android:layout_below="@id/table_thread"
-            android:id="@+id/newt"/>
+            android:layout_below="@id/sender"
+            android:text="Description"
+            android:textSize="25sp"
+            android:id="@+id/descr"/>
     </RelativeLayout>
 
 </FrameLayout>

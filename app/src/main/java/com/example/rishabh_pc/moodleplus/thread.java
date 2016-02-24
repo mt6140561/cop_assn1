@@ -1,55 +1,56 @@
 package com.example.rishabh_pc.moodleplus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link coursedata.OnFragmentInteractionListener} interface
+ * {@link thread.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link coursedata#newInstance} factory method to
+ * Use the {@link thread#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class coursedata extends Fragment {
+public class thread extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String INFO = "array";
-  //  private static final String ARG_PARAM2 = "param2";
+    private static final String SENDER_Name = "sender";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    public String[] basics;
-   // private String mParam2;
-
+    private String mParam1;
+    private String[] mParam2;
+    private ArrayList<String[]> comments;
     private OnFragmentInteractionListener mListener;
 
-    public coursedata() {
+    public thread() {
         // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment coursedata.
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment thread.
      */
     // TODO: Rename and change types and number of parameters
-    public static coursedata newInstance(String[] param1) {
-        coursedata fragment = new coursedata();
+    public static thread newInstance(String param1, String[] param2, ArrayList<String[]> comments) {
+        thread fragment = new thread();
         Bundle args = new Bundle();
-        args.putStringArray(INFO, param1);
-
+        args.putString(SENDER_Name, param1);
+        args.putStringArray(ARG_PARAM2, param2);
+        args.putArrayLi
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,27 +58,23 @@ public class coursedata extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            basics = getArguments().getStringArray(INFO);
-
+            mParam1 = getArguments().getString(SENDER_Name);
+            mParam2 = getArguments().getStringArray(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_coursedata, container, false);
-        TextView te = (TextView) v.findViewById(R.id.coursename);
-        te.setText(basics[0]+": "+ basics[1]);
-        TextView te2 = (TextView) v.findViewById(R.id.coursecode);
-        te2.setText(basics[2]);
-//        Button thread = (Button)v.findViewById(R.id.Threads);
-//        threadOnClick toc = new threadOnClick(this, getFragmentManager(), v, getActivity().getApplicationContext());
-//        thread.setOnClickListener(toc);
-        ((MyAct)getActivity()).threadsJSON(this, (Button)v.findViewById(R.id.Threads));
-
+        View v = inflater.inflate(R.layout.fragment_thread, container, false);
+        TextView te = (TextView) v.findViewById(R.id.sender);
+        String setr = mParam1+": "+mParam2[2];
+        te.setText(setr);
+        TextView te2 = (TextView) v.findViewById(R.id.descr);
+        te2.setText(mParam2[1]);
 
         return v;
     }

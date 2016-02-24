@@ -1,5 +1,7 @@
 package com.example.rishabh_pc.moodleplus;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
@@ -18,10 +20,13 @@ import java.util.Map;
  */
 public class ParaJson extends JsonObjectRequest {
     public Map<String, String> params = new HashMap<String, String>();
+    public Login log;
 
-    public ParaJson (String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+
+    public ParaJson (String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, Login log) {
 
         super(Method.GET, url, null, listener, errorListener);
+        this.log = log;
 
 
     }
@@ -35,7 +40,8 @@ public class ParaJson extends JsonObjectRequest {
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         // since we don't know which of the two underlying network vehicles
         // will Volley use, we have to handle and store session cookies manually
-        Login.get().checkSessionCookie(response.headers);
+        log.get().checkSessionCookie(response.headers);
+        Log.d("parajson", "check session cookie");
 
         return super.parseNetworkResponse(response);
     }
@@ -49,7 +55,8 @@ public class ParaJson extends JsonObjectRequest {
             headers = new HashMap<String, String>();
         }
 
-        Login.get().addSessionCookie(headers);
+        log.get().addSessionCookie(headers);
+        Log.d("parajson", "yeh use hua hai");
 
         return headers;
     }

@@ -3,7 +3,9 @@ package com.example.rishabh_pc.moodleplus;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -47,13 +50,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
-public class MyAct extends AppCompatActivity
+public class MyAct extends Login
         implements NavigationView.OnNavigationItemSelectedListener {
  static Requeue requeue;
+    private static final String SET_COOKIE_KEY = "Set-Cookie";
+    private static final String COOKIE_KEY = "Cookie";
+    private static final String SESSION_COOKIE = "session_id_moodleplus";
 
+    private static MyAct _instance;
+    private SharedPreferences _preferences;
     private overview over;
-    private allcourses allco;
     private ArrayList<String[]> courses;
 
    @Override
@@ -62,14 +70,22 @@ public class MyAct extends AppCompatActivity
         setContentView(R.layout.activity_my);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        this.requeue = new Requeue(this);
-        requeue.start();
+
         courses = new ArrayList<>();
+       _instance = this;
+       _preferences = PreferenceManager.getDefaultSharedPreferences(this);
+       this.requeue = new Requeue(this);
+       requeue.start();
 
 
         Bundle bundle = getIntent().getExtras();
         String abc =bundle.size()+"";
         Log.d("length", abc );
+        String Sescook = bundle.getString("sess");
+       Log.d("cookie", Sescook);
+       SharedPreferences.Editor prefEditor = _preferences.edit();
+       prefEditor.putString(SESSION_COOKIE, Sescook);
+       prefEditor.commit();
 
         String fn = bundle.getString("first_name");
         String ln = bundle.getString("last_name");
@@ -112,6 +128,13 @@ public class MyAct extends AppCompatActivity
 
        }
     }
+
+    public static MyAct get() {
+        return _instance;
+    }
+
+
+
 
 
 //    public void onClick(SubMenu sub) {
@@ -181,7 +204,7 @@ public class MyAct extends AppCompatActivity
                    public void onErrorResponse(VolleyError error) {
                        Log.d("error", "yeh hua");
                    }
-               });
+               }, this);
 
                requeue.add(jobjre);
 
@@ -210,7 +233,7 @@ public class MyAct extends AppCompatActivity
                 public void onErrorResponse(VolleyError error) {
                     Log.d("error", "yeh hua");
                 }
-            });
+            }, this);
             requeue.add(jobjre);
         } else if (id == R.id.overview) {
             fm.beginTransaction()
@@ -235,7 +258,7 @@ public class MyAct extends AppCompatActivity
                 public void onErrorResponse(VolleyError error) {
                     Log.d("error", "yeh hua");
                 }
-            });
+            }, this);
 
             requeue.add(jobjre);
 
@@ -317,38 +340,132 @@ public class MyAct extends AppCompatActivity
 
     }
 
-    public void getName(String id) {
-        String url = "http://192.168.137.1:8000/users/user.json/" + id;
-        Log.d("yeh", "chala toh hai");
 
-        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String r = response.getString("first_name") + response.getString("last_name");
-                    TextView te = (TextView)findViewById(R.id.place);
-                    te.setText(r);
-                    Log.d("yeh1", "chala toh hai");
-                } catch (Exception e) {}
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("error", "yeh hua");
-            }
-        });
-
-        requeue.add(jobjre);
-        Log.d("change", ((TextView)findViewById(R.id.place)).getText().toString());
-
-    }
-
-    public void threadJSON(coursedata dat, Button butt) {
+    public void threadsJSON(coursedata dat, Button butt) {
         threadOnClick toc = new threadOnClick(dat, getFragmentManager(), this);
         Log.d("nope", "yep");
 
         butt.setOnClickListener(toc);
     }
 
+    public void threadJSON(String[] params) {
+//        final String[] pass = params;
+        final FragmentManager fm = getFragmentManager();
+        final Fragment thread = new thread();
+        final Bundle args = new Bundle();
 
+
+
+        String url = "http://192.168.137.1:8000/users/user.json/"+pass[0];
+        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                        JSONObject json = response.getJSONObject("user");
+
+                    String fullname = json.getString("first_name")+" "+json.getString("last_name");
+                    Log.d("bhai", fullname);
+                    args.putString("sender", fullname);
+
+                    thread.setArguments(args);
+                    fm.beginTransaction()
+                            .replace(R.id.blanklayout, thread)
+                            .commit();
+
+//                    fm.beginTransaction()
+//                            .replace(R.id.blanklayout, new thread().newInstance(fullname, pass))
+//                            .commit();
+
+                } catch (Exception e) {}
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", "yeh hua");
+            }
+        }, this);
+        requeue.add(jobjre);
+        String url2 = "http://192.168.137.1:8000/users/user.json/"+pass[0];
+        ParaJson jobjre2 = new ParaJson(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    JSONObject json = response.getJSONObject("user");
+
+                    String fullname = json.getString("first_name")+" "+json.getString("last_name");
+                    Log.d("bhai", fullname);
+                    args.putString("sender", fullname);
+                    args.putStringArray("param2", pass);
+                    thread.setArguments(args);
+                    fm.beginTransaction()
+                            .replace(R.id.blanklayout, thread)
+                            .commit();
+
+//                    fm.beginTransaction()
+//                            .replace(R.id.blanklayout, new thread().newInstance(fullname, pass))
+//                            .commit();
+
+                } catch (Exception e) {}
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", "yeh hua");
+            }
+        }, this);
+        requeue.add(jobjre);
+
+        Log.d("bhai", "out");
+
+
+
+    }
+
+    public void newthread(String coursecode) {
+        final MyAct main = this;
+        String title = ((EditText)findViewById(R.id.box1)).getText().toString();
+        String descr = ((EditText)findViewById(R.id.box2)).getText().toString();
+        String[] titl = title.split("\\s+");
+        String[] desc = descr.split("\\s+");
+        String actitl = "";
+        String actdes = "";
+        for(int i=0; i<titl.length; i++){
+            actitl = actitl +"%20" +titl[i];
+        }
+        for(int j=0; j<desc.length; j++){
+            actdes = actdes +"%20" +desc[j];
+        }
+        Log.d("thread", actitl + " " + actdes);
+        String url = "http://192.168.137.1:8000/threads/new.json?title="+actitl+"&description="+actdes+"&course_code="+coursecode;
+        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+//                    String bool = response.getString("success");
+//                    if(bool.equals("true")) {
+//                        threadOnClick toc = new threadOnClick(cour, getFragmentManager(), main);
+//                        toc.onClick((TextView)findViewById(R.id.sender));
+//                    }
+                    Log.d("new", "new thread added");
+                } catch (Exception e) {}
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", "yeh hua");
+            }
+        }, this);
+        requeue.add(jobjre);
+
+    }
 }
+
+
+
+
+

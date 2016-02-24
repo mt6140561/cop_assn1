@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     private static final String SESSION_COOKIE = "session_id_moodleplus";
 
     private static Login _instance;
-    private static Requeue requeue;
+    static Requeue requeue;
 
     private SharedPreferences _preferences;
 
@@ -88,11 +88,19 @@ public class Login extends AppCompatActivity {
         }
     }
 
+//    public void threadJSON(String[] params, View v) {
+//        threadPartOnClick tpoc = new threadPartOnClick(params, getFragmentManager(), this);
+//        v.setOnClickListener(tpoc);
+//    }
+
 
     public void send(View v){
 
 
         final Intent intent = new Intent(this, MyAct.class);
+        intent.putExtra("sess", _preferences.getString(SESSION_COOKIE, "DEFAULT"));
+        Log.d("yeh gaya", _preferences.getString(SESSION_COOKIE, "DEFAULT"));
+        final Login log = this;
 //        TextView te = (TextView)findViewById(R.id.usr);
 //        String str = "hello";
 //        te.setText((CharSequence)str);
@@ -140,7 +148,7 @@ public class Login extends AppCompatActivity {
                            public void onErrorResponse(VolleyError error) {
                                Log.d("error", "yeh hua");
                            }
-                       });
+                       }, log);
 
 
                        requeue.add(jobjre);
@@ -154,7 +162,7 @@ public class Login extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 // TODO Auto-generated method stub
             }
-        });
+        }, this);
 
         requeue.add(jobjreq);
 

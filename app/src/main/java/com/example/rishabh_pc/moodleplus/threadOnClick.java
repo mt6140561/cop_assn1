@@ -34,7 +34,7 @@ public class threadOnClick implements View.OnClickListener {
 
     public void onClick(View v) {
         Requeue requeue = myAct.requeue;
-        String coursecode = allc.basics[0];
+        final String coursecode = allc.basics[0];
         Log.d("course in thread", coursecode);
         String url = "http://192.168.137.1:8000/courses/course.json/"+ coursecode +"/threads";
         ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
@@ -59,7 +59,7 @@ public class threadOnClick implements View.OnClickListener {
                 }
                     Log.d("thread", "aa gaya response");
                     fm.beginTransaction()
-                            .replace(R.id.blanklayout, new threads().newInstance(all_threads))
+                            .replace(R.id.blanklayout, new threads().newInstance(all_threads, coursecode))
                             .commit();
 
                 } catch (Exception e) {}
@@ -70,7 +70,7 @@ public class threadOnClick implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 Log.d("error", "yeh hua");
             }
-        });
+        }, myAct);
         requeue.add(jobjre);
 
     }
