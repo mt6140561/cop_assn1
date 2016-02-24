@@ -349,10 +349,8 @@ public class MyAct extends Login
     }
 
     public void threadJSON(String[] params) {
-//        final String[] pass = params;
+        final String[] pass = params;
         final FragmentManager fm = getFragmentManager();
-        final Fragment thread = new thread();
-        final Bundle args = new Bundle();
 
 
 
@@ -366,16 +364,12 @@ public class MyAct extends Login
 
                     String fullname = json.getString("first_name")+" "+json.getString("last_name");
                     Log.d("bhai", fullname);
-                    args.putString("sender", fullname);
 
-                    thread.setArguments(args);
+
+
                     fm.beginTransaction()
-                            .replace(R.id.blanklayout, thread)
+                            .replace(R.id.blanklayout, new thread().newInstance(fullname, pass))
                             .commit();
-
-//                    fm.beginTransaction()
-//                            .replace(R.id.blanklayout, new thread().newInstance(fullname, pass))
-//                            .commit();
 
                 } catch (Exception e) {}
 
@@ -387,26 +381,26 @@ public class MyAct extends Login
             }
         }, this);
         requeue.add(jobjre);
-        String url2 = "http://192.168.137.1:8000/users/user.json/"+pass[0];
-        ParaJson jobjre2 = new ParaJson(url, new Response.Listener<JSONObject>() {
+
+    }
+
+    public void comments(String id) {
+        final String pass = id;
+        final FragmentManager fm = getFragmentManager();
+        String url = "http://192.168.137.1:8000/threads/thread.json/"+id;
+        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
 
-                    JSONObject json = response.getJSONObject("user");
+                    ArrayList<String[]> list = convertcomm(response);
 
-                    String fullname = json.getString("first_name")+" "+json.getString("last_name");
-                    Log.d("bhai", fullname);
-                    args.putString("sender", fullname);
-                    args.putStringArray("param2", pass);
-                    thread.setArguments(args);
+
+
+
                     fm.beginTransaction()
-                            .replace(R.id.blanklayout, thread)
+                            .replace(R.id.blanklayout, new comments().newInstance(pass, list))
                             .commit();
-
-//                    fm.beginTransaction()
-//                            .replace(R.id.blanklayout, new thread().newInstance(fullname, pass))
-//                            .commit();
 
                 } catch (Exception e) {}
 
@@ -419,11 +413,9 @@ public class MyAct extends Login
         }, this);
         requeue.add(jobjre);
 
-        Log.d("bhai", "out");
-
-
-
     }
+
+
 
     public void newthread(String coursecode) {
         final MyAct main = this;
@@ -463,6 +455,52 @@ public class MyAct extends Login
         requeue.add(jobjre);
 
     }
+
+    private ArrayList<String[]> convertcomm(JSONObject json) {
+        try {
+            JSONArray arr = json.getJSONArray("comments");
+            ArrayList<String[]> ret = new ArrayList<>();
+
+
+            for (int i = 0; i < arr.length(); i++) {
+                String[] th = new String[3];
+                th[0] = arr.getJSONObject(i).getString("user_id");
+                th[1] = arr.getJSONObject(i).getString("description");
+                th[2] = arr.getJSONObject(i).getString("created_at");
+                ret.add(th);
+            }
+            return ret;
+        } catch (Exception e) {
+            Log.d("Excep", e.getMessage().toString());
+            return null;
+        }
+    }
+
+    public void logout() {
+        String url = "http://192.168.137.1:8000/default/logout.json";
+        final MyAct myAct = this;
+        ParaJson jobjre = new ParaJson(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    myAct.onRestart();
+                } catch (Exception e) {}
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", "yeh hua");
+            }
+        }, this);
+        requeue.add(jobjre);
+        SharedPreferences.Editor edit = _preferences.edit();
+        edit.clear();
+
+    }
+
+
 }
 
 

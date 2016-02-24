@@ -24,6 +24,8 @@
             android:text="Description"
             android:textSize="25sp"
             android:id="@+id/descr"/>
+
+
     </RelativeLayout>
 
 </FrameLayout>
